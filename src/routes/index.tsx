@@ -2,10 +2,13 @@ import {
   createBrowserRouter,
   redirect,
   RouterProvider,
+  type RouteObject,
 } from "react-router-dom";
 import { RoutePaths } from "../types/router";
 import { Root } from "../components/layout/Root";
 import { Surveys } from "../pages/surveys";
+import { sidebarItems } from "../data/sidebar";
+import { MainTitle } from "../components/titles/MainTitle";
 
 const router = createBrowserRouter([
   {
@@ -20,10 +23,13 @@ const router = createBrowserRouter([
         path: RoutePaths.Surveys,
         Component: Surveys,
       },
-      {
-        path: RoutePaths.Impact,
-        Component: () => <div>Impact</div>,
-      },
+      ...Object.values(sidebarItems).map(
+        ({ path, title }) =>
+          ({
+            path,
+            Component: () => <MainTitle>{title}</MainTitle>,
+          } as RouteObject)
+      ),
     ],
   },
 ]);

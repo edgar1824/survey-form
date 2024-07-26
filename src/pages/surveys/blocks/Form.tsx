@@ -1,24 +1,30 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Button,
+  Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormHelperText,
   FormLabel,
   Input,
   InputLabel,
   MenuItem,
   Radio,
+  RadioGroup,
   Select,
+  TextareaAutosize,
   TextField,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import type { FC } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import {
   surveySchema,
   type SurveySchema,
 } from "../../../validations/surveys.shema";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 interface Props {
   onSubmit: SubmitHandler<SurveySchema>;
@@ -29,15 +35,18 @@ export const Form: FC<Props> = ({ onSubmit }) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    control,
   } = useForm<SurveySchema>({
     resolver: zodResolver(surveySchema),
   });
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       style={{ display: "flex", gap: "32px", flexDirection: "column" }}
     >
-      <FormControl variant="outlined">
+      <FormControl error={!!errors?.name} variant="outlined">
         <InputLabel htmlFor="name-label">Survey name</InputLabel>
         <Input
           {...register("name")}
@@ -48,66 +57,146 @@ export const Form: FC<Props> = ({ onSubmit }) => {
             ":before": { borderRadius: "8px" },
             ":after": {
               borderRadius: "8px",
-              //   transform: "scaleX(1)",
+              borderWidth: "0 0 0 2px",
             },
           }}
         />
+        <FormHelperText>This will be presented to recipients</FormHelperText>
       </FormControl>
 
-      <FormControl
-        variant="outlined"
-        sx={{
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderTop: "none",
-            borderRight: "none",
-            borderLeft: "none",
-            borderRadius: "8px",
-          },
-        }}
-      >
-        <InputLabel id="select-label">Form</InputLabel>
-        <Select
-          labelId="select-label"
-          id="select"
-          label="Form"
-          placeholder="Please select a form"
-          {...register("select")}
-          sx={{
-            ":before": { borderRadius: "8px" },
-            ":after": { borderRadius: "8px" },
-          }}
+      <Controller
+        control={control}
+        name="select"
+        render={({ field: { value, onChange } }) => (
+          <FormControl
+            error={!!errors?.select}
+            variant="outlined"
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderTop: "none",
+                borderRight: "none",
+                borderLeft: "none",
+                borderRadius: "8px",
+              },
+            }}
+          >
+            <InputLabel id="select-label">Form</InputLabel>
+            <Select
+              labelId="select-label"
+              label="Form"
+              placeholder="Please select a form"
+              value={value}
+              onChange={onChange}
+              sx={{
+                ":before": { borderRadius: "8px" },
+                ":after": { borderRadius: "8px" },
+              }}
+            >
+              <MenuItem value={"10"}>Ten</MenuItem>
+              <MenuItem value={"20"}>Twenty</MenuItem>
+              <MenuItem value={"30"}>Thirty</MenuItem>
+            </Select>
+            <FormHelperText>
+              Your survey recipients will be asked to fill in these form
+            </FormHelperText>
+          </FormControl>
+        )}
+      />
+
+      <FormControl error={!!errors?.type}>
+        <FormLabel>Recipients</FormLabel>
+        <RadioGroup
+          aria-labelledby="Recipients"
+          defaultValue="per-user"
+          name="radio-buttons-group"
+          row
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Recipients</FormLabel>
-        <FormGroup aria-label="position" row>
           <FormControlLabel
-            value="end"
+            name="type"
+            value={"per-user" as SurveySchema["type"]}
             control={<Radio {...register("type")} />}
             label="One survey per user"
             labelPlacement="end"
           />
           <FormControlLabel
-            value="end"
+            name="type"
+            value={"per-contributor" as SurveySchema["type"]}
             control={<Radio {...register("type")} />}
             label="One survey per contributor"
             labelPlacement="end"
           />
-        </FormGroup>
+        </RadioGroup>
+
+        <FormControlLabel
+          control={<Checkbox defaultChecked />}
+          label="Send to all listed contributors and users via email"
+        />
       </FormControl>
 
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Deadline for responses</FormLabel>
-        <DatePicker  />
+      <Controller
+        control={control}
+        name="date"
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
+          <FormControl error={!!error}>
+            <FormLabel>Deadline for responses</FormLabel>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={dayjs(value)}
+                onChange={(e) => onChange(e?.toDate())}
+                sx={{
+                  width: "189px",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderTop: "none",
+                    borderRight: "none",
+                    borderLeft: "none",
+                    borderRadius: "8px",
+                  },
+                }}
+              />
+            </LocalizationProvider>
+          </FormControl>
+        )}
+      />
+      <FormControl error={!!errors?.notes}>
+        <FormLabel>Notes for recipients (optional)</FormLabel>
+        <TextField
+          multiline
+          rows={4}
+          maxLength={1000}
+          inputProps={{
+            maxLength: 1000,
+          }}
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderTop: "none",
+              borderRight: "none",
+              borderLeft: "none",
+              borderRadius: "8px",
+            },
+          }}
+          {...register("notes")}
+        />
+        <FormHelperText
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <span>
+            These notes will appear in the email sent to your recipients
+          </span>
+          <span>{watch("notes")?.split("")?.length} / 1000</span>
+        </FormHelperText>
       </FormControl>
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          width: "189px",
+          borderRadius: "100px",
+          p: "10px 24px 10px 24px",
+        }}
+      >
+        Create survey
+      </Button>
     </form>
   );
 };

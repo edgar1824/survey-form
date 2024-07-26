@@ -1,9 +1,16 @@
 import { type FC, type PropsWithChildren } from "react";
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "https://flyby-router-demo.herokuapp.com/",
+  link: new HttpLink({
+    uri: "https://countries.trevorblades.com/",
+  }),
   cache: new InMemoryCache(),
 });
 
