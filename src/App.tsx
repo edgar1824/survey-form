@@ -1,13 +1,22 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import { GraphQLProvider } from "./gql";
 import { Router } from "./routes";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#2E3EFF",
+    },
+  },
+});
+
 function App() {
   return (
-    <>
-      <GraphQLProvider>
+    <GraphQLProvider>
+      <ThemeProvider theme={theme}>
         <Router />
-      </GraphQLProvider>
-    </>
+      </ThemeProvider>
+    </GraphQLProvider>
   );
 }
 

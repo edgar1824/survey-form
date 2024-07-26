@@ -49,7 +49,11 @@ export const Sidebar: FC = () => {
                     {<Icon active={isActive} />}
                   </ListItemIcon>
                   <ListItemText
+                    primaryTypographyProps={{
+                      fontSize: 12,
+                    }}
                     sx={{
+                      textAlign: "center",
                       color: isActive ? iconColors.active : iconColors.inactive,
                     }}
                   >

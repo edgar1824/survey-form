@@ -12,19 +12,15 @@ import {
   Radio,
   RadioGroup,
   Select,
-  TextareaAutosize,
   TextField,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
+import dayjs from "dayjs";
 import type { FC } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import {
-  surveySchema,
-  type SurveySchema,
-} from "../../../validations/surveys.shema";
-import dayjs from "dayjs";
+import { surveySchema, type SurveySchema } from "validations/surveys.shema";
 
 interface Props {
   onSubmit: SubmitHandler<SurveySchema>;
@@ -39,6 +35,9 @@ export const Form: FC<Props> = ({ onSubmit }) => {
     control,
   } = useForm<SurveySchema>({
     resolver: zodResolver(surveySchema),
+    defaultValues: {
+      date: new Date(),
+    },
   });
 
   return (
@@ -54,6 +53,7 @@ export const Form: FC<Props> = ({ onSubmit }) => {
           aria-describedby="name-label"
           placeholder="e.g. ESG Assessment 2022"
           sx={{
+            px: 2,
             ":before": { borderRadius: "8px" },
             ":after": {
               borderRadius: "8px",
@@ -92,9 +92,9 @@ export const Form: FC<Props> = ({ onSubmit }) => {
                 ":after": { borderRadius: "8px" },
               }}
             >
-              <MenuItem value={"10"}>Ten</MenuItem>
-              <MenuItem value={"20"}>Twenty</MenuItem>
-              <MenuItem value={"30"}>Thirty</MenuItem>
+              <MenuItem value={"Test1"}>Test1</MenuItem>
+              <MenuItem value={"Test2"}>Test2</MenuItem>
+              <MenuItem value={"Test3"}>Test3</MenuItem>
             </Select>
             <FormHelperText>
               Your survey recipients will be asked to fill in these form
@@ -141,7 +141,7 @@ export const Form: FC<Props> = ({ onSubmit }) => {
             <FormLabel>Deadline for responses</FormLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                value={dayjs(value)}
+                value={dayjs(value || new Date())}
                 onChange={(e) => onChange(e?.toDate())}
                 sx={{
                   width: "189px",
@@ -182,7 +182,7 @@ export const Form: FC<Props> = ({ onSubmit }) => {
           <span>
             These notes will appear in the email sent to your recipients
           </span>
-          <span>{watch("notes")?.split("")?.length} / 1000</span>
+          <span>{watch("notes")?.split("")?.length | 0} / 1000</span>
         </FormHelperText>
       </FormControl>
 

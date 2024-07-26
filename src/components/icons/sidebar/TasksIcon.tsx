@@ -1,6 +1,6 @@
 import { type FC } from "react";
-import type { IconProps } from "../../../types/components/icon.types";
-import { iconColors } from "../../../data/sidebar";
+import type { IconProps } from "types/components/icon.types";
+import { iconColors } from "data/sidebar";
 
 export const TasksIcon: FC<IconProps> = ({ active }) => {
   const color = active ? iconColors?.active : iconColors?.inactive;

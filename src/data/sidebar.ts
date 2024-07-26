@@ -1,16 +1,16 @@
-import { ConfigurationIcon } from "../components/icons/sidebar/ConfigurationIcon";
-import { DataIcon } from "../components/icons/sidebar/DataIcon";
-import { DocsIcon } from "../components/icons/sidebar/DocsIcon";
-import { FlowsIcon } from "../components/icons/sidebar/FlowsIcon";
-import { GovernanceIcon } from "../components/icons/sidebar/GovernanceIcon";
-import { ImpactIcon } from "../components/icons/sidebar/ImpactIcon";
-import { IntelligenceIcon } from "../components/icons/sidebar/IntelligenceIcon";
-import { LearnIcon } from "../components/icons/sidebar/LearnIcon";
-import { ReportingIcon } from "../components/icons/sidebar/ReportingIcon";
-import { SupportIcon } from "../components/icons/sidebar/SupportIcon";
-import { SurveysIcon } from "../components/icons/sidebar/SurveysIcon";
-import { TasksIcon } from "../components/icons/sidebar/TasksIcon";
-import { RoutePaths, type NavItem } from "../types/router";
+import { ConfigurationIcon } from "components/icons/sidebar/ConfigurationIcon";
+import { DataIcon } from "components/icons/sidebar/DataIcon";
+import { DocsIcon } from "components/icons/sidebar/DocsIcon";
+import { FlowsIcon } from "components/icons/sidebar/FlowsIcon";
+import { GovernanceIcon } from "components/icons/sidebar/GovernanceIcon";
+import { ImpactIcon } from "components/icons/sidebar/ImpactIcon";
+import { IntelligenceIcon } from "components/icons/sidebar/IntelligenceIcon";
+import { LearnIcon } from "components/icons/sidebar/LearnIcon";
+import { ReportingIcon } from "components/icons/sidebar/ReportingIcon";
+import { SupportIcon } from "components/icons/sidebar/SupportIcon";
+import { SurveysIcon } from "components/icons/sidebar/SurveysIcon";
+import { TasksIcon } from "components/icons/sidebar/TasksIcon";
+import { RoutePaths, type NavItem } from "types/router";
 
 export const sidebarItems = {
   impact: {
@@ -50,7 +50,7 @@ export const sidebarItems = {
   },
   surveys: {
     path: `/${RoutePaths.Surveys}`,
-    title: "Surveys",
+    title: "Create a survey",
     Icon: SurveysIcon,
   },
   flows: {

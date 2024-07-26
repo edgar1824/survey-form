@@ -9,7 +9,7 @@ import {
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: "https://countries.trevorblades.com/",
+    uri: import.meta.env.VITE_GQL_BASE_URL,
   }),
   cache: new InMemoryCache(),
 });

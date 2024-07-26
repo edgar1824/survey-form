@@ -1,6 +1,6 @@
 import { type FC } from "react";
-import { iconColors } from "../../../data/sidebar";
-import type { IconProps } from "../../../types/components/icon.types";
+import { iconColors } from "data/sidebar";
+import type { IconProps } from "types/components/icon.types";
 
 export const ReportingIcon: FC<IconProps> = ({ active }) => {
   const color = active ? iconColors?.active : iconColors?.inactive;
