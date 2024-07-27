@@ -37,6 +37,7 @@ export const Form: FC<Props> = ({ onSubmit }) => {
     resolver: zodResolver(surveySchema),
     defaultValues: {
       date: new Date(),
+      checked: true,
     },
   });
 
@@ -128,7 +129,7 @@ export const Form: FC<Props> = ({ onSubmit }) => {
         </RadioGroup>
 
         <FormControlLabel
-          control={<Checkbox defaultChecked />}
+          control={<Checkbox {...register("checked")} defaultChecked />}
           label="Send to all listed contributors and users via email"
         />
       </FormControl>
